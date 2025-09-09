@@ -1,0 +1,114 @@
+<!-- Skill Modal (Create/Edit) with Transparent Background -->
+<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    style="background: rgba(0, 0, 0, 0.1);">
+
+    <!-- Modal Content -->
+    <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-300"
+        style="backdrop-filter: blur(2px); scrollbar-width: none; -ms-overflow-style: none;">
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+            <h2 class="text-xl font-semibold text-gray-900">
+                {{ mode === 'edit' ? 'Edit Skill' : 'Create New Skill' }}
+            </h2>
+            <button (click)="onClose()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Body -->
+        <form [formGroup]="skillForm" class="p-6 space-y-6 bg-white">
+            <!-- Skill Name -->
+            <div>
+                <label for="skillName" class="block text-sm font-medium text-gray-700 mb-1">
+                    Skill Name *
+                </label>
+                <input type="text" id="skillName" formControlName="skillName"
+                    placeholder="e.g., Angular, Node.js, Python"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                    [class.border-red-500]="hasFormError('skillName')" />
+                <div *ngIf="hasFormError('skillName')" class="mt-1 text-sm text-red-600">
+                    <span *ngIf="skillForm.get('skillName')?.hasError('required')">Skill name is required</span>
+                </div>
+            </div>
+
+            <!-- Skill Category -->
+            <div>
+                <label for="skillCategory" class="block text-sm font-medium text-gray-700 mb-1">
+                    Category *
+                </label>
+                <select id="skillCategory" formControlName="skillCategory"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                    [class.border-red-500]="hasFormError('skillCategory')">
+                    <option value="">Select a category</option>
+                    <option *ngFor="let category of skillCategories" [value]="category">{{ category }}</option>
+                </select>
+                <div *ngIf="hasFormError('skillCategory')" class="mt-1 text-sm text-red-600">
+                    <span *ngIf="skillForm.get('skillCategory')?.hasError('required')">Category is required</span>
+                </div>
+            </div>
+
+            <!-- Proficiency Level -->
+            <div>
+                <label for="proficiencyLevel" class="block text-sm font-medium text-gray-700 mb-1">
+                    Proficiency Level *
+                </label>
+                <select id="proficiencyLevel" formControlName="proficiencyLevel"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                    [class.border-red-500]="hasFormError('proficiencyLevel')">
+                    <option value="">Select proficiency level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Novice">Novice</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Expert">Expert</option>
+                </select>
+                <div *ngIf="hasFormError('proficiencyLevel')" class="mt-1 text-sm text-red-600">
+                    <span *ngIf="skillForm.get('proficiencyLevel')?.hasError('required')">Proficiency level is
+                        required</span>
+                </div>
+            </div>
+
+            <!-- Years of Experience -->
+            <div>
+                <label for="yearsOfExperience" class="block text-sm font-medium text-gray-700 mb-1">
+                    Years of Experience
+                </label>
+                <input type="number" id="yearsOfExperience" formControlName="yearsOfExperience" placeholder="0" min="0"
+                    max="50"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                    [class.border-red-500]="hasFormError('yearsOfExperience')" />
+                <div *ngIf="hasFormError('yearsOfExperience')" class="mt-1 text-sm text-red-600">
+                    <span *ngIf="skillForm.get('yearsOfExperience')?.hasError('min')">Years must be 0 or greater</span>
+                    <span *ngIf="skillForm.get('yearsOfExperience')?.hasError('max')">Years cannot exceed 50</span>
+                </div>
+            </div>
+
+            <!-- Skill Description -->
+            <div>
+                <label for="skillDescription" class="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                </label>
+                <textarea id="skillDescription" formControlName="skillDescription" rows="3"
+                    placeholder="Describe your experience with this skill..."
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"></textarea>
+            </div>
+        </form>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end space-x-3 px-6 py-4 border-t border-gray-200 bg-white">
+            <button type="button" (click)="onClose()"
+                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                Cancel
+            </button>
+            <button type="button" (click)="onSubmit()" [disabled]="skillForm.invalid || isFormLoading"
+                class="px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center">
+                <div *ngIf="isFormLoading" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                {{ mode === 'edit' ? 'Update' : 'Save' }}
+            </button>
+        </div>
+    </div>
+</div>

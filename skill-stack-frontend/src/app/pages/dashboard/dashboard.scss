@@ -1,0 +1,86 @@
+// Dashboard component specific styles
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// Smooth transitions for interactive elements
+.transition-all {
+    transition: all 0.2s ease-in-out;
+}
+
+// Custom scrollbar for skills overview if needed
+.skills-overview {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+}
+
+// Ensure cards have consistent height
+.project-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .project-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+// Loading spinner animation
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-main {
+        grid-template-columns: 1fr;
+    }
+}
+
+// Goal priority indicators
+.goal-high-priority {
+    border-left-color: #ef4444;
+}
+
+.goal-medium-priority {
+    border-left-color: #f59e0b;
+}
+
+.goal-low-priority {
+    border-left-color: #10b981;
+}

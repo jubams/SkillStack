@@ -1,0 +1,28 @@
+/* Add these styles to your global styles.css or in your component's SCSS */
+
+
+/* Success Snackbar */
+.success-snackbar {
+    background-color: #10b981 !important; /* Green background */
+    color: white !important;
+  }
+  
+  .success-snackbar .mat-mdc-snack-bar-action {
+    color: white !important;
+  }
+  
+  /* Error Snackbar */
+  .error-snackbar {
+    background-color: #ef4444 !important; /* Red background */
+    color: white !important;
+  }
+  
+  .error-snackbar .mat-mdc-snack-bar-action {
+    color: white !important;
+  }
+  
+  /* Optional: Custom snackbar container styling */
+  .mat-mdc-snack-bar-container {
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+  }

@@ -1,0 +1,216 @@
+<!-- Skills Page Container -->
+<div class="min-h-screen bg-gray-50 p-6">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-800"></div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="hasError && !isLoading" class="max-w-4xl mx-auto">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0L4.168 16.5c-.77.833.192 2.5 1.732 2.5z">
+                    </path>
+                </svg>
+                <span class="text-red-800 font-medium">{{ errorMessage }}</span>
+                <button (click)="refreshSkills()" class="ml-auto text-red-600 hover:text-red-800 text-sm underline">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Content -->
+    <div *ngIf="!isLoading && !hasError" class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Skills</h1>
+                    <p class="text-gray-600">Manage and track your technical skills</p>
+                </div>
+                <button (click)="openCreateModal()"
+                    class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add Skill
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4">
+                <!-- Category Filter -->
+                <div class="flex-1">
+                    <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="category-filter" [(ngModel)]="selectedCategory"
+                        (change)="onCategoryChange(selectedCategory)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                        <option value="All Categories">All Categories</option>
+                        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                    </select>
+                </div>
+
+                <!-- Level Filter -->
+                <div class="flex-1">
+                    <label for="level-filter" class="block text-sm font-medium text-gray-700 mb-1">Level</label>
+                    <select id="level-filter" [(ngModel)]="selectedLevel" (change)="onLevelChange(selectedLevel)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                        <option value="All Levels">All Levels</option>
+                        <option *ngFor="let level of proficiencyLevels" [value]="level">{{ level }}</option>
+                    </select>
+                </div>
+
+                <!-- Search -->
+                <div class="flex-1">
+                    <label for="search-filter" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                    <div class="relative">
+                        <input type="text" id="search-filter" [(ngModel)]="searchTerm"
+                            (input)="onSearchChange($any($event.target).value)" placeholder="Search skills..."
+                            class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-end">
+                    <button (click)="clearFilters()"
+                        class="mt-5 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200">
+                        Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 skills-grid">
+            <div *ngFor="let skill of filteredSkills"
+                class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 skill-card">
+
+                <!-- Skill Header -->
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-semibold text-gray-900 truncate">{{ skill.skillName }}</h3>
+                        <p class="text-sm text-gray-600 mt-1">{{ skill.skillCategory }}</p>
+                    </div>
+                    <div class="ml-4">
+                        <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                            {{ skill.proficiencyLevel }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Proficiency Bar -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">Proficiency</span>
+                        <span class="text-sm text-gray-500">{{ getProficiencyProgress(skill.proficiencyLevel) }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="h-2 rounded-full transition-all duration-300 proficiency-bar"
+                            [class]="getProficiencyColor(skill.proficiencyLevel)"
+                            [style.width.%]="getProficiencyProgress(skill.proficiencyLevel)"></div>
+                    </div>
+                </div>
+
+                <!-- Skill Details -->
+                <div class="space-y-3 mb-4">
+                    <!-- Years of Experience -->
+                    <div *ngIf="skill.yearsOfExperience" class="flex items-center text-sm">
+                        <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-gray-600">{{ skill.yearsOfExperience }} {{ skill.yearsOfExperience === 1 ?
+                            'year' : 'years' }} experience</span>
+                    </div>
+
+                    <!-- Project Count -->
+                    <div class="flex items-center text-sm">
+                        <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                        <span class="text-gray-600">{{ getProjectCount(skill) }} {{ getProjectCount(skill) === 1 ?
+                            'project' : 'projects' }}</span>
+                    </div>
+                </div>
+
+                <!-- Skill Description -->
+                <div *ngIf="skill.skillDescription" class="mb-4">
+                    <p class="text-sm text-gray-600 line-clamp-2">{{ skill.skillDescription }}</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-end space-x-2 pt-4 border-t border-gray-100">
+                    <button (click)="openEditModal(skill)"
+                        class="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 action-btn"
+                        title="Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                            </path>
+                        </svg>
+                    </button>
+                    <button (click)="openDeleteModal(skill)"
+                        class="p-2 text-gray-400 hover:text-red-600 transition-colors duration-200 action-btn"
+                        title="Delete">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Skills State -->
+        <div *ngIf="filteredSkills.length === 0" class="text-center py-12">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
+                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">
+                    {{ allSkills.length === 0 ? 'No skills yet' : 'No skills match your filters' }}
+                </h3>
+                <p class="text-gray-600 mb-6">
+                    {{ allSkills.length === 0 ? 'Start building your skill portfolio by adding your first skill.' : 'Try
+                    adjusting your search criteria or clear the filters.' }}
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <button *ngIf="allSkills.length > 0" (click)="clearFilters()"
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                        Clear Filters
+                    </button>
+                    <button (click)="openCreateModal()"
+                        class="px-4 py-2 bg-slate-800 text-white rounded-md text-sm font-medium hover:bg-slate-900 transition-colors duration-200">
+                        Add Skill
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Components -->
+<app-skill-modal [isOpen]="modal.isOpen && (modal.mode === 'create' || modal.mode === 'edit')"
+    [mode]="modal.mode === 'edit' ? 'edit' : 'create'" [skill]="modal.skill" [skillForm]="skillForm"
+    [isFormLoading]="isFormLoading" (closeModal)="closeModal()" (submitForm)="onSubmit()">
+</app-skill-modal>
+
+<app-delete-skill-modal [isOpen]="modal.isOpen && modal.mode === 'delete'" [skill]="modal.skill"
+    [isLoading]="isFormLoading" (closeModal)="closeModal()" (confirmDelete)="onSubmit()">
+</app-delete-skill-modal>

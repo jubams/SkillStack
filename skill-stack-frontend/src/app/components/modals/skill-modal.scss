@@ -1,0 +1,26 @@
+/* Skill Modal Styles */
+.skill-modal-overlay {
+    backdrop-filter: blur(1px);
+    transition: all 0.2s ease-in-out;
+}
+
+.skill-modal-content {
+    animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Optional: Add a subtle shadow to make modal stand out more */
+.skill-modal-content {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}

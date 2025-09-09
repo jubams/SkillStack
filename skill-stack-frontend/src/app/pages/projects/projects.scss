@@ -1,0 +1,11 @@
+// Using Tailwind CSS for all styling
+// This file is kept for Angular component reference but contains no custom styles
+
+/* Custom utility classes if needed */
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}

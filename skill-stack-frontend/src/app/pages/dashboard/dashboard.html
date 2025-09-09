@@ -1,0 +1,238 @@
+
+<div class="min-h-screen bg-gray-50 p-6">
+
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-800"></div>
+    </div>
+
+
+    <div *ngIf="hasError && !isLoading" class="max-w-4xl mx-auto">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0L4.168 16.5c-.77.833.192 2.5 1.732 2.5z">
+                    </path>
+                </svg>
+                <span class="text-red-800 font-medium">{{ errorMessage }}</span>
+                <button (click)="refreshDashboard()" class="ml-auto text-red-600 hover:text-red-800 text-sm underline">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="!isLoading && !hasError" class="max-w-7xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+            <p class="text-gray-600">Track your development progress and manage your portfolio</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-gray-900">{{ stats.totalProjects }}</div>
+                        <div class="text-sm text-gray-600">Total Projects</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-gray-900">{{ stats.skillsTracked }}</div>
+                        <div class="text-sm text-gray-600">Skills Tracked</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-gray-900">{{ stats.activeGoals }}</div>
+                        <div class="text-sm text-gray-600">Active Goals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Skills Overview</h2>
+                        <a routerLink="/skills" class="text-slate-600 hover:text-slate-800 text-sm font-medium">
+                            View all
+                        </a>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div *ngFor="let skill of skillsOverview" class="flex items-center justify-between">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-1">
+                                    <p class="text-sm font-medium text-gray-900 truncate">{{ skill.skillName }}</p>
+                                    <p class="text-xs text-gray-500 ml-2">{{ skill.proficiencyLevel }}</p>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-slate-600 h-2 rounded-full transition-all duration-300"
+                                        [style.width.%]="skill.progress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Upcoming Goals</h2>
+                        <a routerLink="/goals" class="text-slate-600 hover:text-slate-800 text-sm font-medium">
+                            View all
+                        </a>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div *ngFor="let goal of upcomingGoals" class="border-l-4 border-slate-400 pl-4">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">{{ goal.goalTitle }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">Due: {{ formatDate(goal.dueDate) }}</p>
+                                </div>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                                    [class]="getGoalStatusText(goal.goalStatus) === 'In Progress' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'">
+                                    {{ getGoalStatusText(goal.goalStatus) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="upcomingGoals.length === 0" class="text-center py-4">
+                            <p class="text-sm text-gray-500">No upcoming goals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold text-gray-900">Recent Projects</h2>
+                <a routerLink="/projects" class="text-slate-600 hover:text-slate-800 text-sm font-medium">
+                    View all
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div *ngFor="let project of recentProjects"
+                    class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <!-- Project Thumbnail -->
+                    <div class="h-48 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                        <div *ngIf="project.thumbnail; else placeholderThumbnail">
+                            <img [src]="project.thumbnail" [alt]="project.projectTitle"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <ng-template #placeholderThumbnail>
+                            <div class="text-center">
+                                <svg class="w-12 h-12 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                    </path>
+                                </svg>
+                                <p class="text-sm text-slate-500 font-medium">Project Thumbnail</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <!-- Project Content -->
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ project.projectTitle }}</h3>
+                            <p class="text-sm text-gray-600 line-clamp-2">{{ project.projectDescription || 'No
+                                description available' }}</p>
+                        </div>
+
+                        <!-- Project Tech Stack -->
+                        <div class="mb-4">
+                            <div class="flex flex-wrap gap-2">
+                                <span *ngFor="let skill of project.skills?.slice(0, 3)"
+                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                                    {{ skill.skillName }}
+                                </span>
+                                <span *ngIf="(project.skills?.length || 0) > 3"
+                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                    +{{ (project.skills?.length || 0) - 3 }} more
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Project Status & Links -->
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                                [class]="getProjectStatusColor(project.projectStatus)">
+                                {{ project.projectStatus }}
+                            </span>
+
+                            <div class="flex space-x-2">
+                                <a *ngIf="project.projectGithubURL" [href]="project.projectGithubURL" target="_blank"
+                                    class="text-gray-400 hover:text-gray-600">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                                <a *ngIf="project.projectLiveURL" [href]="project.projectLiveURL" target="_blank"
+                                    class="text-gray-400 hover:text-gray-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                        </path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No projects state -->
+                <div *ngIf="recentProjects.length === 0" class="col-span-full">
+                    <div class="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                        <p class="text-gray-600 font-medium">No projects yet</p>
+                        <p class="text-sm text-gray-500 mt-1">Start by creating your first project</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

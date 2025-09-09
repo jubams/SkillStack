@@ -1,0 +1,89 @@
+<header class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+
+            <!-- Logo and Brand -->
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-gray-800 rounded flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">DP</span>
+                </div>
+                <h1 class="text-xl font-semibold text-gray-900">DevPortfolio</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-8">
+                <a routerLink="/dashboard" routerLinkActive="text-blue-600 border-b-2 border-gray-900"
+                    class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                    Dashboard
+                </a>
+                <a routerLink="/skills" routerLinkActive="text-blue-600 border-b-2 border-gray-900"
+                    class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                    Skills
+                </a>
+                <a routerLink="/projects" routerLinkActive="text-blue-600 border-b-2 border-gray-900"
+                    class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                    Projects
+                </a>
+                <a routerLink="/goals" routerLinkActive="text-blue-600 border-b-2 border-gray-900"
+                    class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors duration-200">
+                    Goals
+                </a>
+            </nav>
+
+            <!-- User Profile or Auth Buttons -->
+            <div class="flex items-center space-x-4">
+                <!-- If user is logged in -->
+                <div *ngIf="isLoggedIn" class="flex items-center space-x-3">
+                    <a routerLink="/account"
+                        class="flex items-center space-x-2 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors duration-200">
+                        <img [src]="getUserProfileImage()" [alt]="getUserDisplayName()"
+                            class="w-8 h-8 rounded-full object-cover border-2 border-gray-200">
+                        <span class="text-sm font-medium text-gray-700">{{ getUserDisplayName() }}</span>
+                    </a>
+                    <button (click)="logout()"
+                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+
+                <!-- If user is not logged in -->
+                <div *ngIf="!isLoggedIn" class="flex items-center space-x-3">
+                    <a routerLink="/login"
+                        class=" bg-gray-600 text-white hover:bg-gray-400 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                        Login
+                    </a>
+                    <a routerLink="/register"
+                        class="bg-gray-900 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mobile Navigation (Optional - for responsive design) -->
+    <div class="md:hidden border-t border-gray-200 bg-white">
+        <nav class="px-4 py-2 space-y-1">
+            <a routerLink="/dashboard" routerLinkActive="bg-blue-50 text-blue-600"
+                class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                Dashboard
+            </a>
+            <a routerLink="/skills" routerLinkActive="bg-blue-50 text-blue-600"
+                class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                Skills
+            </a>
+            <a routerLink="/projects" routerLinkActive="bg-blue-50 text-blue-600"
+                class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                Projects
+            </a>
+            <a routerLink="/goals" routerLinkActive="bg-blue-50 text-blue-600"
+                class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                Goals
+            </a>
+        </nav>
+    </div>
+</header>

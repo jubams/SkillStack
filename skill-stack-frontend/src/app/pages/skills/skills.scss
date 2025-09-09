@@ -1,0 +1,102 @@
+// Skills page specific styles
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// Smooth transitions for skill cards
+.skill-card {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+// Proficiency bar animations
+.proficiency-bar {
+    transition: width 0.3s ease-in-out;
+}
+
+// Custom search input styles
+.search-input:focus {
+    box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.1);
+}
+
+// Filter section responsive styles
+@media (max-width: 1024px) {
+    .filters-container {
+        .filter-row {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+}
+
+// Skill card grid responsive adjustments
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+// Action buttons hover effects
+.action-btn {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+// Loading state
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Empty state styling
+.empty-state {
+    .empty-icon {
+        opacity: 0.5;
+    }
+}
+
+// Proficiency level color variants
+.proficiency-beginner {
+    background-color: #ef4444;
+}
+
+.proficiency-novice {
+    background-color: #f97316;
+}
+
+.proficiency-intermediate {
+    background-color: #eab308;
+}
+
+.proficiency-advanced {
+    background-color: #3b82f6;
+}
+
+.proficiency-expert {
+    background-color: #10b981;
+}

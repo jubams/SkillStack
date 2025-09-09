@@ -1,0 +1,80 @@
+### Get all users
+GET http://localhost:3000/auth/login
+
+### Create a new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Salman",
+  "lastName": "Alkhudhari",  
+  "email": "salman.juba@Icloud.com",
+  "password": "Test1234"
+}
+
+### login 
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "test1@example.com",
+  "password": "123456"
+}
+
+### skill post
+POST http://localhost:3000/skills
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdDFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTU1MjM3MzMsImV4cCI6MTc1NTUyNDYzM30.CtHLhmq4n5P8u1WuX0X-RNaNpSIMpqARVeXGg6WPtvw
+
+{
+  "skillName": "ReactJS",
+  "proficiencyLevel": "Beginner",
+  "skillCategory": "Backend",
+  "userId": "1",
+  "yearsOfExperience": "2"
+}
+
+### skills get
+GET http://localhost:3000/skills
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdDFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTU1MjU5NDgsImV4cCI6MTc1NTUyNjg0OH0.MfvNF2p80IoyIVVhwr5BF3wa0zmIdQ5yjjQujLdYfzI
+
+
+### skill Patch
+PATCH http://localhost:3000/skills/1
+Content-Type: application/json
+
+{
+  "skillName": "ReactJS",
+  "proficiencyLevel": "Beginner",
+  "skillCategory": "Backend",
+  "userId": "1",
+  "yearsOfExperience": "5"
+}
+
+
+### skill delete
+DELETE http://localhost:3000/skills/2
+
+
+### project Post
+POST http://localhost:3000/projects
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdDFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTU1MjM3MzMsImV4cCI6MTc1NTUyNDYzM30.CtHLhmq4n5P8u1WuX0X-RNaNpSIMpqARVeXGg6WPtvw
+
+
+{
+  "projectTitle": "AngularJS Portfolio App",
+  "projectDescription": "A full-stack portfolio project built with NestJS, Angular, and SQLite.",
+  "thumbnail": "https://example.com/thumbnail.png",
+  "projectGithubURL": "https://github.com/username/portfolio-app",
+  "projectLiveURL": "https://portfolio.example.com",
+  "projectStatus": "In Progress",
+  "projectStartedDate": "2025-08-01",
+  "projectFinishedDate": null,
+  "userId": 1,
+  "skillIds": [1,2,3,4]
+}
+
+### 
+Get http://localhost:3000/projects
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdDFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTU1MjM3MzMsImV4cCI6MTc1NTUyNDYzM30.CtHLhmq4n5P8u1WuX0X-RNaNpSIMpqARVeXGg6WPtvw
